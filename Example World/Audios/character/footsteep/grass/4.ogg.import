@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://c6xp02iafy3hs"
+path="res://.godot/imported/4.ogg-bcc1eee0a18e049473454478da825e3c.oggvorbisstr"
+
+[deps]
+
+source_file="res://Example World/Audios/character/footsteep/grass/4.ogg"
+dest_files=["res://.godot/imported/4.ogg-bcc1eee0a18e049473454478da825e3c.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

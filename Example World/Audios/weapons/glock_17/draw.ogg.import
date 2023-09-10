@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://02ruq57xy31o"
+path="res://.godot/imported/draw.ogg-1ac0885c532dbb45f03b81efc03219f6.oggvorbisstr"
+
+[deps]
+
+source_file="res://Example World/Audios/weapons/glock_17/draw.ogg"
+dest_files=["res://.godot/imported/draw.ogg-1ac0885c532dbb45f03b81efc03219f6.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

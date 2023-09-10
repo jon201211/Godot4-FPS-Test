@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bew4fiyoe0wy3"
+path="res://.godot/imported/impact.ogg-ffbd4f2cdeaac55deaa34e98358358fe.oggvorbisstr"
+
+[deps]
+
+source_file="res://Example World/Audios/barrel/impact.ogg"
+dest_files=["res://.godot/imported/impact.ogg-ffbd4f2cdeaac55deaa34e98358358fe.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

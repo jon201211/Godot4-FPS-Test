@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://8b8o58ajc3ja"
+path="res://.godot/imported/reload.ogg-02735e42790148d8df6640434f9c58cd.oggvorbisstr"
+
+[deps]
+
+source_file="res://Example World/Audios/weapons/mk_23/reload.ogg"
+dest_files=["res://.godot/imported/reload.ogg-02735e42790148d8df6640434f9c58cd.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

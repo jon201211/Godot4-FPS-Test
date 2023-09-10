@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cff5bmppubb5v"
+path="res://.godot/imported/5.ogg-997cfbd8f9696bf188699ecc2eebaa6b.oggvorbisstr"
+
+[deps]
+
+source_file="res://Example World/Audios/character/fall/concrete/5.ogg"
+dest_files=["res://.godot/imported/5.ogg-997cfbd8f9696bf188699ecc2eebaa6b.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
