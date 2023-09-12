@@ -1,0 +1,94 @@
+[gd_scene load_steps=13 format=3 uid="uid://bdupkh0grwy27"]
+
+[ext_resource type="Script" path="res://addons/first_person_controller/scripts/movement_controller.gd" id="1_5d3td"]
+[ext_resource type="PackedScene" uid="uid://b8drbos167vf8" path="res://addons/first_person_controller/scenes/head.tscn" id="2_erqpo"]
+[ext_resource type="Script" path="res://addons/first_person_controller/scripts/sprint.gd" id="3_ebxqw"]
+[ext_resource type="Script" path="res://addons/first_person_controller/scripts/crouch.gd" id="4_mp1ix"]
+[ext_resource type="Script" path="res://addons/first_person_controller/scripts/mantle.gd" id="4_qfpqr"]
+[ext_resource type="Script" path="res://addons/first_person_controller/simple_mantle.gd" id="5_aieei"]
+[ext_resource type="Script" path="res://addons/first_person_controller/scripts/teleport.gd" id="5_r5j21"]
+[ext_resource type="Texture2D" uid="uid://cmhjsd7jwq7xl" path="res://addons/first_person_controller/examples/graphics/sprites/crosshair001.png" id="6_vije1"]
+[ext_resource type="PackedScene" uid="uid://ccs5s33r56sve" path="res://addons/first_person_controller/scenes/debug_logger.tscn" id="7_a1q10"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_enu8y"]
+size = Vector3(0.6, 1.8, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ox3wg"]
+size = Vector3(0.6, 0.05, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f05cd"]
+size = Vector3(0.6, 2, 0.7)
+
+[node name="Player" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 3
+floor_block_on_wall = false
+script = ExtResource("1_5d3td")
+speed = 5
+acceleration = 4
+deceleration = 5
+jump_height = 1.5
+jump_timeout_sec = 0.35
+jump_on_just_pressed = false
+jump_max_wall_angle_deg = 120.0
+wall_jump_reset_velocity = false
+height = 1.7
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("BoxShape3D_enu8y")
+
+[node name="Hands" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.775, -0.2)
+shape = SubResource("BoxShape3D_ox3wg")
+disabled = true
+
+[node name="Head" parent="." instance=ExtResource("2_erqpo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.54, 0)
+fov_tween_time = 0.5
+step_tween_time = 0.1
+
+[node name="Sprint" type="Node" parent="."]
+script = ExtResource("3_ebxqw")
+action_name = &"sprint"
+
+[node name="Crouch" type="Node" parent="."]
+script = ExtResource("4_mp1ix")
+action_name = &"crouch"
+
+[node name="SimpleMantle" type="Node" parent="."]
+script = ExtResource("5_aieei")
+
+[node name="Mantle" type="Node" parent="." node_paths=PackedStringArray("handsShape")]
+script = ExtResource("4_qfpqr")
+edge_detection_rays = 3
+redundant_jump_height = 0.15
+timeout_ms = 500
+place_hit_point_debug_sphere = true
+handsShape = NodePath("../Hands")
+
+[node name="MantleWallDetection" type="Area3D" parent="Mantle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mantle/MantleWallDetection"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, -0.65)
+shape = SubResource("BoxShape3D_f05cd")
+
+[node name="Teleport" type="Node" parent="."]
+script = ExtResource("5_r5j21")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/CenterContainer"]
+layout_mode = 2
+texture = ExtResource("6_vije1")
+
+[node name="DebugLogger" parent="." instance=ExtResource("7_a1q10")]

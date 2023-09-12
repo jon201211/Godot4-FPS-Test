@@ -14,10 +14,10 @@ func _ready():
 	# Automatically start the server in headless mode.
 	if DisplayServer.get_name() == "headless":
 		print("Automatically starting dedicated server")
-		_on_button_pressed.call_deferred()
+		_on_host_button_pressed.call_deferred()
 
 
-func _on_button_pressed():
+func _on_host_button_pressed():
 	# Start as server
 	var peer = WebSocketMultiplayerPeer.new()
 	peer.create_server(PORT)
@@ -55,12 +55,12 @@ func start_game():
 # Call this function deferred and only on the main authority (server).
 func change_level(scene: PackedScene):
 	# Remove old level if any.
-	var level = $Level
-	for c in level.get_children():
-		level.remove_child(c)
+	var levels = $Levels
+	for c in levels.get_children():
+		levels.remove_child(c)
 		c.queue_free()
 	# Add new level.
-	level.add_child(scene.instantiate())
+	levels.add_child(scene.instantiate())
 
 # The server can restart the level by pressing HOME.
 func _input(event):
