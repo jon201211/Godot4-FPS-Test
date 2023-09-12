@@ -51,7 +51,7 @@ func _exit_tree():
 
 func _on_host_button_pressed():
 	main_menu.hide()
-	#hud.show()
+	hud.show()
 	
 	peer.create_server(PORT)
 	multiplayer.multiplayer_peer = peer
@@ -61,7 +61,7 @@ func _on_host_button_pressed():
 
 func _on_join_button_pressed():
 	main_menu.hide()
-	#hud.show()
+	hud.show()
 	
 	peer.create_client("ws://" + address_entry.text + ":" + str(PORT))
 	multiplayer.multiplayer_peer = peer

@@ -1,7 +1,9 @@
 extends Control
 
+@onready var address_entry = $VBoxContainer/LineEdit
+
 const PORT = 9999
-#var peer = WebSocketMultiplayerPeer.new()
+var peer = WebSocketMultiplayerPeer.new()
 
 var SPAWN_RANDOM = 5.0
 
@@ -19,7 +21,7 @@ func _ready():
 
 func _on_host_button_pressed():
 	# Start as server
-	var peer = WebSocketMultiplayerPeer.new()
+	#var peer = WebSocketMultiplayerPeer.new()
 	peer.create_server(PORT)
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		OS.alert("Failed to start multiplayer server")
@@ -30,12 +32,7 @@ func _on_host_button_pressed():
 
 func _on_join_button_pressed():
 	# Start as client
-	var txt : String = $UI/Net/Options/Remote.text
-	if txt == "":
-		OS.alert("Need a remote to connect to.")
-		return
-	var peer = ENetMultiplayerPeer.new()
-	peer.create_client(txt, PORT)
+	peer.create_client("ws://" + address_entry.text + ":" + str(PORT))
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		OS.alert("Failed to start multiplayer client")
 		return
