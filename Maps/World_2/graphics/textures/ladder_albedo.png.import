@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://7udxya1w3its"
-path="res://.godot/imported/ladder_albedo.png-9e935379cfea93c52b53b09ac29c3b0c.ctex"
+path="res://.godot/imported/ladder_albedo.png-9af5c8995c2a1d9ca885044a5b5a8cd6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/first_person_controller/examples/graphics/textures/ladder_albedo.png"
-dest_files=["res://.godot/imported/ladder_albedo.png-9e935379cfea93c52b53b09ac29c3b0c.ctex"]
+source_file="res://Maps/World_2/graphics/textures/ladder_albedo.png"
+dest_files=["res://.godot/imported/ladder_albedo.png-9af5c8995c2a1d9ca885044a5b5a8cd6.ctex"]
 
 [params]
 

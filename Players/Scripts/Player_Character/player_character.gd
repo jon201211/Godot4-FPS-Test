@@ -2,18 +2,9 @@ extends CharacterBody3D
 
 signal health_changed(health_value)
 
-@onready var Camera = get_node("%Camera")
+@onready var camera = $Camera
 
 
-# Set by the authority, synchronized on spawn.
-@export var player_id := 1 :
-	set(id):
-		player_id = id
-		# Give authority over the player input to the appropriate peer.
-		$PlayerInput.set_multiplayer_authority(id)
-
-# Player synchronized input.
-@onready var input = $PlayerInput
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -25,35 +16,30 @@ var shake_rotation = 0
 var Start_Shake_Rotation = 0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var gravity = 9.8 #ProjectSettings.get_setting("physics/3d/default_gravity")
 
-
+func _enter_tree():
+	var pname = name
+	print("_enter_tree  player name : ", pname, position)
+	set_multiplayer_authority(str(pname).to_int())
 
 func _ready():
+	print("_ready  player name : ", name, position)
 	if not is_multiplayer_authority(): return
 	
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	Camera.get_node("MainCamera").current = true
-
-func _input(event):
-	if not is_multiplayer_authority(): return
-
-	if event.is_action_pressed("ui_cancel"):
-		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		else:
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	
-
-
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	camera.current = true
 
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
 	
 	if event is InputEventMouseMotion:
-		var MouseEvent = event.relative * MouseSensitivity
-		CameraLook(MouseEvent)
-	
+		#var MouseEvent = event.relative * MouseSensitivity
+		#CameraLook(MouseEvent)
+		rotate_y(-event.relative.x * .005)
+		camera.rotate_x(-event.relative.y * .005)
+		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
+
 # 	if Input.is_action_just_pressed("shoot") \
 # 			and anim_player.current_animation != "shoot":
 # 		play_shoot_effects.rpc()
@@ -67,15 +53,15 @@ func CameraLook(Movement: Vector2):
 	CameraRotation += Movement
 	
 	transform.basis = Basis()
-	Camera.transform.basis = Basis()
+	camera.transform.basis = Basis()
 	
 	rotate_object_local(Vector3(0,1,0),-CameraRotation.x) # first rotate in Y
-	Camera.rotate_object_local(Vector3(1,0,0), -CameraRotation.y) # then rotate in X
+	camera.rotate_object_local(Vector3(1,0,0), -CameraRotation.y) # then rotate in X
 	CameraRotation.y = clamp(CameraRotation.y,-1.5,1.2)
 
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
-		
+	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d281ix6nxwnax"
-path="res://.godot/imported/ladder_moes.png-caac1c044158ce649df232c2cfe0612f.ctex"
+path="res://.godot/imported/ladder_moes.png-132461f006c93ea27a04838d077b325a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/first_person_controller/examples/graphics/textures/ladder_moes.png"
-dest_files=["res://.godot/imported/ladder_moes.png-caac1c044158ce649df232c2cfe0612f.ctex"]
+source_file="res://Maps/World_2/graphics/textures/ladder_moes.png"
+dest_files=["res://.godot/imported/ladder_moes.png-132461f006c93ea27a04838d077b325a.ctex"]
 
 [params]
 

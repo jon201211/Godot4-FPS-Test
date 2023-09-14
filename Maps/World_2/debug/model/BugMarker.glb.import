@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://27ut010turqm"
-path="res://.godot/imported/BugMarker.glb-492a92e5cd89c33fd92e8cb4244655a7.scn"
+path="res://.godot/imported/BugMarker.glb-e8f01b1ed0a0055571294e4585d1ca91.scn"
 
 [deps]
 
-source_file="res://addons/first_person_controller/examples/debug/model/BugMarker.glb"
-dest_files=["res://.godot/imported/BugMarker.glb-492a92e5cd89c33fd92e8cb4244655a7.scn"]
+source_file="res://Maps/World_2/debug/model/BugMarker.glb"
+dest_files=["res://.godot/imported/BugMarker.glb-e8f01b1ed0a0055571294e4585d1ca91.scn"]
 
 [params]
 

@@ -1,12 +1,10 @@
-[gd_scene load_steps=39 format=3]
+[gd_scene load_steps=37 format=3 uid="uid://c3vqjtrj8qnbh"]
 
 [ext_resource type="Script" path="res://Players/Scripts/Player_Character/player_character.gd" id="1_lyojb"]
 [ext_resource type="Script" path="res://Players/Scripts/Player_Character/HUD.gd" id="2_k8mux"]
-[ext_resource type="Texture2D" uid="uid://bjh5ic6qy4jtl" path="res://Weapons/Textures/crosshairs/crosshair001.png" id="3_3ots0"]
-[ext_resource type="Environment" uid="uid://bqp54syxqnqww" path="res://Maps/World_1/Materials/world_environment.tres" id="4_kbejb"]
+[ext_resource type="Texture2D" uid="uid://bjh5ic6qy4jtl" path="res://Weapons/Textures/rosshairs/crosshair001.png" id="3_3ots0"]
+[ext_resource type="Environment" uid="uid://bqp54syxqnqww" path="res://Maps/World_1/Scenes/World/world_environment.tres" id="4_kbejb"]
 [ext_resource type="Script" path="res://Weapons/Scripts/Weapon_State_Machine.gd" id="5_7gu04"]
-[ext_resource type="Resource" path="res://Weapons/Materials/blasterI.tres" id="7_i3rwm"]
-[ext_resource type="Resource" path="res://Weapons/Materials/blasterN.tres" id="9_tcc52"]
 [ext_resource type="PackedScene" uid="uid://bvlnghquw6pe2" path="res://Weapons/Meshes/blasterN.glb" id="10_wwypk"]
 [ext_resource type="PackedScene" uid="uid://dhebkmfqs0d6r" path="res://Weapons/Meshes/blasterL.glb" id="11_ilien"]
 
@@ -1027,11 +1025,7 @@ current = true
 
 [node name="Weapons_Manager" type="Node" parent="MainCamera/Weapon"]
 script = ExtResource("5_7gu04")
-Weapons_List = {
-"blasterI": ExtResource("7_i3rwm"),
-"blasterN": ExtResource("9_tcc52")
-}
-Start_Weapons = ["blasterN", "blasterI"]
+Start_Weapons = Array[String](["blasterN", "blasterI"])
 
 [node name="Weapons_Models" type="Node3D" parent="MainCamera/Weapon"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.55045, 0)

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dqba67udl4ftt"
-path="res://.godot/imported/fence_albedo.png-f2211230d3e2301cacbb43478da793fd.ctex"
+path="res://.godot/imported/fence_albedo.png-c83aa82a6cab97517f699126f9a5e704.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/first_person_controller/examples/graphics/textures/fence_albedo.png"
-dest_files=["res://.godot/imported/fence_albedo.png-f2211230d3e2301cacbb43478da793fd.ctex"]
+source_file="res://Maps/World_2/graphics/textures/fence_albedo.png"
+dest_files=["res://.godot/imported/fence_albedo.png-c83aa82a6cab97517f699126f9a5e704.ctex"]
 
 [params]
 

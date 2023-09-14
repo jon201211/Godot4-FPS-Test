@@ -1,17 +1,19 @@
-extends Control
+extends Node
 
-@onready var address_entry = $VBoxContainer/LineEdit
+@onready var levels = $Level
+@onready var menu = $MainMenu
+@onready var line_edit = $MainMenu/VBoxContainer/LineEdit
 
 const PORT = 9999
-var peer = WebSocketMultiplayerPeer.new()
+
 
 var SPAWN_RANDOM = 5.0
 
 func _ready():
 	# Start paused
-	get_tree().paused = true
+	#get_tree().paused = true
 	# You can save bandwith by disabling server relay and peer notifications.
-	multiplayer.server_relay = false
+	#multiplayer.server_relay = false
 
 	# Automatically start the server in headless mode.
 	if DisplayServer.get_name() == "headless":
@@ -21,8 +23,9 @@ func _ready():
 
 func _on_host_button_pressed():
 	# Start as server
-	#var peer = WebSocketMultiplayerPeer.new()
+	var peer = WebSocketMultiplayerPeer.new()
 	peer.create_server(PORT)
+
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		OS.alert("Failed to start multiplayer server")
 		return
@@ -32,7 +35,9 @@ func _on_host_button_pressed():
 
 func _on_join_button_pressed():
 	# Start as client
-	peer.create_client("ws://" + address_entry.text + ":" + str(PORT))
+	var peer = WebSocketMultiplayerPeer.new()
+	peer.create_client("ws://" + line_edit.text + ":" + str(PORT))
+
 	if peer.get_connection_status() == MultiplayerPeer.CONNECTION_DISCONNECTED:
 		OS.alert("Failed to start multiplayer client")
 		return
@@ -41,18 +46,17 @@ func _on_join_button_pressed():
 
 func start_game():
 	# Hide the UI and unpause to start the game.
-	$UI.hide()
-	get_tree().paused = false
+	menu.hide()
+	#get_tree().paused = false
 	# Only change level on the server.
 	# Clients will instantiate the level via the spawner.
 	if multiplayer.is_server():
-		change_level.call_deferred(load("res://level.tscn"))
+		change_level.call_deferred(load("res://Maps/World_1/Scenes/World/world.tscn"))
 
 
 # Call this function deferred and only on the main authority (server).
 func change_level(scene: PackedScene):
 	# Remove old level if any.
-	var levels = $Levels
 	for c in levels.get_children():
 		levels.remove_child(c)
 		c.queue_free()
@@ -60,11 +64,9 @@ func change_level(scene: PackedScene):
 	levels.add_child(scene.instantiate())
 
 # The server can restart the level by pressing HOME.
-func _input(event):
-	if not multiplayer.is_server():
-		return
-	if event.is_action("ui_home") and Input.is_action_just_pressed("ui_home"):
-		change_level.call_deferred(load("res://level.tscn"))
+# func _input(event):
+# 	if multiplayer.is_server() and event.is_action("ui_home") and Input.is_action_just_pressed("ui_home"):
+# 		change_level.call_deferred(load("res://Maps/World_1/Scenes/World/world.tscn"))
 
  
 
