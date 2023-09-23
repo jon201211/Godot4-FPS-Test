@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dxlkgbr1p580"]
+[gd_scene load_steps=7 format=3 uid="uid://dxlkgbr1p580"]
 
 [ext_resource type="Script" path="res://Weapons/Scripts/bullet.gd" id="1_l4wtt"]
 
@@ -45,6 +45,16 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ly6dy")
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_n52o0"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/sync = true
+properties/1/watch = false
+
 [node name="bullet" type="RigidBody3D"]
 top_level = true
 collision_layer = 4
@@ -69,6 +79,9 @@ skeleton = NodePath("")
 wait_time = 10.0
 one_shot = true
 autostart = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_n52o0")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

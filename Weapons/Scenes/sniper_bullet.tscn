@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://biv77tnbun43s"]
+[gd_scene load_steps=8 format=3 uid="uid://biv77tnbun43s"]
 
 [ext_resource type="Script" path="res://Weapons/Scripts/bullet.gd" id="1_add8c"]
 
@@ -70,6 +70,16 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_vm5ru")
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tg2kp"]
+properties/0/path = NodePath(".:rotation")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+properties/1/path = NodePath(".:position")
+properties/1/spawn = true
+properties/1/sync = true
+properties/1/watch = false
+
 [node name="bullet" type="RigidBody3D"]
 top_level = true
 collision_layer = 4
@@ -94,6 +104,9 @@ autostart = true
 transform = Transform3D(5, 0, 0, 0, -2.18557e-07, 5, 0, -5, -2.18557e-07, 0, 0, 0)
 mesh = SubResource("ArrayMesh_57mmu")
 skeleton = NodePath("")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_tg2kp")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -206,6 +206,10 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.313352, -0.240567, -0.907474)
 gizmo_extents = 0.21
 
+[node name="BulletRayCast3D" type="RayCast3D" parent="Camera/Weapons_Manager"]
+target_position = Vector3(0.313, -0.241, 0.907)
+collision_mask = 2
+
 [node name="Pick_Up_Detection" type="Area3D" parent="."]
 collision_layer = 0
 collision_mask = 8

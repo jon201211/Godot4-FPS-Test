@@ -10,6 +10,8 @@ signal Connect_Weapon_To_HUD
 
 @export var Animation_Player: AnimationPlayer
 @onready var Bullet_Point = get_node("%BulletPoint")
+@onready var Bullet_RayCast = get_node("BulletRayCast3D")
+
 @onready var Debug_Bullet = preload("res://Weapons/Scenes/hit_debug.tscn")
 
 var Melee_Shake:= Vector3(0,0,2.5)
@@ -64,13 +66,15 @@ func _input(event):
 		reset_secondary()
 		
 	if event.is_action_pressed("Shoot"):
-		shoot()
+		#shoot()
+		shoot.rpc()
 		
 	if event.is_action_released("Shoot"):
 		Current_Weapon.Spray_Count_Update()
 		
 	if event.is_action_pressed("Reload"):
-		reload()
+		#reload()
+		reload.rpc()
 
 	if event.is_action_pressed("Drop_Weapon"):
 		drop(Current_Weapon.Weapon_Name)
@@ -111,6 +115,7 @@ func Change_Weapon(weapon_name: String):
 	Next_Weapon = ""
 	enter()
 
+@rpc("call_local")
 func shoot():
 	if Current_Weapon.Current_Ammo != 0:
 		if not Animation_Player.is_playing():
@@ -119,7 +124,8 @@ func shoot():
 			audio_node.get_node("shoot").play();
 			Current_Weapon.Current_Ammo -= 1
 			Update_Ammo.emit([Current_Weapon.Current_Ammo, Current_Weapon.Reserve_Ammo])
-			var Camera_Collission =  GetCameraCollision(Current_Weapon.Fire_Range)
+			var Camera_Collission =  GetCameraCollision2(Current_Weapon.Fire_Range)
+			print("Camera_Collission: ", Camera_Collission)
 			match Current_Weapon.Type:
 				NULL:
 					pass
@@ -130,6 +136,7 @@ func shoot():
 	else:
 		reload()
 
+@rpc("call_local")
 func reload():
 	if Current_Weapon.Current_Ammo == Current_Weapon.Magazine:
 		return
@@ -243,6 +250,47 @@ func GetCameraCollision(_fire_range: int)->Array:
 	else:
 		return [null,Ray_End]
 
+
+func GetCameraCollision2(_fire_range: int)->Array:
+	var space_state = get_world_3d().direct_space_state
+	var _Camera = get_viewport().get_camera_3d()
+	var _Viewport = get_viewport().get_size()
+
+	var Ray_Origin = Bullet_RayCast.global_transform.origin
+	var dir = -Bullet_RayCast.global_transform.basis.z
+
+	var Spray = Current_Weapon.Get_Spray()
+	
+	if Current_Weapon.Secondary_Mode == true:
+		Spray = Vector2.ZERO
+	
+
+	var Ray_End = Ray_Origin + dir * _fire_range
+	#print("Ray_Origin: ", Ray_Origin)
+	#print("Ray_End: ", Ray_End)
+
+	#var Ray_Origin1 = _Camera.project_ray_origin(_Viewport/2)
+	#var Ray_End1 = (Ray_Origin + _Camera.project_ray_normal((_Viewport/2)+Vector2i(Spray))*_fire_range)
+
+	#print("Ray_Origin1: ", Ray_Origin1)
+	#print("Ray_End1: ", Ray_End1)
+
+	var New_Intersection = PhysicsRayQueryParameters3D.create(Ray_Origin,Ray_End)
+	New_Intersection.set_exclude(Collision_Exclusion)
+	var Intersection = space_state.intersect_ray(New_Intersection)
+	
+	if not Intersection.is_empty():
+		var Collision = [Intersection.collider,Intersection.position]
+		var rd = Debug_Bullet.instantiate()
+		var world = get_tree().get_root()
+		world.add_child(rd)
+		rd.global_translate(Intersection.position)
+		return Collision
+	else:
+		return [null,Ray_End]
+
+
+
 func HitScanCollision(Collision: Array):
 	var Point = Collision[1]
 	if Collision[0]:
@@ -257,12 +305,15 @@ func HitScanCollision(Collision: Array):
 			if Bullet_Collision:
 				HitScanDamage(Bullet_Collision.collider, Bullet_Direction,Bullet_Collision.position,Current_Weapon.Damage)
 
+
 func HitScanDamage(Collider, Direction, Position, Damage):
 	if Collider.is_in_group("Target") and Collider.has_method("Hit_Successful"):
 		Hit_Successfull.emit()
 		Collider.Hit_Successful(Damage, Direction, Position)
 
+
 func LaunchProjectile(Point: Vector3):
+	print("LaunchProjectile: ", Point)
 	var Direction = (Point - Bullet_Point.global_transform.origin).normalized()
 	var Projectile = Current_Weapon.Projectile_To_Load.instantiate()
 
