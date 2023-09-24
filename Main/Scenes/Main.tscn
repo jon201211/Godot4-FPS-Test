@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://58yi56tmq4ng"]
+[gd_scene load_steps=3 format=3 uid="uid://58yi56tmq4ng"]
 
 [ext_resource type="Script" path="res://Main/Scenes/Main.gd" id="1_2y8m8"]
+
+[sub_resource type="Theme" id="Theme_87j5s"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_2y8m8")
@@ -17,34 +19,61 @@ layout_mode = 3
 anchor_right = 1.0
 anchor_bottom = 0.999
 offset_left = 3.0
-offset_top = -3.0
+offset_top = -2.0
 offset_right = 6.0
-offset_bottom = -3.28003
+offset_bottom = -2.28003
+theme = SubResource("Theme_87j5s")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainMenu"]
 layout_mode = 0
-offset_left = 276.0
-offset_top = 77.0
-offset_right = 896.0
-offset_bottom = 364.0
+offset_left = 19.0
+offset_top = 138.0
+offset_right = 639.0
+offset_bottom = 425.0
+scale = Vector2(0.603613, 1.49961)
 
 [node name="Label" type="Label" parent="MainMenu/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 34
 text = "Main Menu"
 horizontal_alignment = 1
 
 [node name="HostButton" type="Button" parent="MainMenu/VBoxContainer"]
 layout_mode = 2
-text = "Host Server"
+theme_override_font_sizes/font_size = 34
+text = "Create Server"
 
 [node name="JoinButton" type="Button" parent="MainMenu/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 34
 text = "Join Server"
 
 [node name="LineEdit" type="LineEdit" parent="MainMenu/VBoxContainer"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 34
 text = "127.0.0.1"
 alignment = 1
 
+[node name="OptionsButton" type="Button" parent="MainMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 34
+text = "Options"
+
+[node name="ExitButton" type="Button" parent="MainMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 34
+text = "Exit"
+
+[node name="Title" type="Label" parent="MainMenu"]
+layout_mode = 0
+offset_left = 565.0
+offset_top = 185.0
+offset_right = 1063.0
+offset_bottom = 320.0
+theme_override_colors/font_color = Color(0.654902, 1, 0, 1)
+theme_override_font_sizes/font_size = 96
+text = "Mini Strike"
+
 [connection signal="pressed" from="MainMenu/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
 [connection signal="pressed" from="MainMenu/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
+[connection signal="pressed" from="MainMenu/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

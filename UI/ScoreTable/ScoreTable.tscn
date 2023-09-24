@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://cjpkcjcjmh42n"]
+
+[ext_resource type="Script" path="res://UI/ScoreTable/ScoreTable.gd" id="1_nu70l"]
+[ext_resource type="PackedScene" uid="uid://c0jf6py1vthv2" path="res://UI/ScoreTable/TableRow.tscn" id="3_jsjfh"]
+
+[node name="ScoreTable" type="PopupPanel"]
+transparent_bg = true
+size = Vector2i(1160, 656)
+visible = true
+script = ExtResource("1_nu70l")
+
+[node name="Background" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(1152, 648)
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 1156.0
+offset_bottom = 652.0
+color = Color(0.0431373, 0.501961, 0.705882, 0.54902)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(1152, 648)
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 1156.0
+offset_bottom = 652.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="ScoresVBox" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer/ScoresVBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="FirstTableRow" parent="VBoxContainer/HBoxContainer/ScoresVBox" instance=ExtResource("3_jsjfh")]
+layout_mode = 2
+
+[node name="Separator" type="ColorRect" parent="VBoxContainer/HBoxContainer/ScoresVBox"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="NoScoresLabel" type="Label" parent="VBoxContainer/HBoxContainer/ScoresVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 35
+text = "No scores"
+horizontal_alignment = 1
+vertical_alignment = 1

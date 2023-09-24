@@ -47,6 +47,9 @@ func _ready():
 func _input(event):
 	if not is_multiplayer_authority(): return
 
+	#player die 
+	if get_parent().get_parent().die: return 
+
 	if event.is_action_pressed("WeaponUp"):
 		var GetRef = WeaponStack.find(Current_Weapon.Weapon_Name)
 		GetRef = min(GetRef+1,WeaponStack.size()-1)
@@ -124,8 +127,8 @@ func shoot():
 			audio_node.get_node("shoot").play();
 			Current_Weapon.Current_Ammo -= 1
 			Update_Ammo.emit([Current_Weapon.Current_Ammo, Current_Weapon.Reserve_Ammo])
-			var Camera_Collission =  GetCameraCollision2(Current_Weapon.Fire_Range)
-			print("Camera_Collission: ", Camera_Collission)
+			var Camera_Collission =  GetCameraCollision(Current_Weapon.Fire_Range)
+			print("Camera_Collission: ", Camera_Collission,  "type: ", Current_Weapon.Type)
 			match Current_Weapon.Type:
 				NULL:
 					pass
@@ -224,37 +227,9 @@ func CheckSecondaryMode():
 		if !Input.is_action_pressed("Secondary_Fire"):
 			reset_secondary()	
 
+
 func GetCameraCollision(_fire_range: int)->Array:
-	var _Camera = get_viewport().get_camera_3d()
-	var _Viewport = get_viewport().get_size()
-	
-	var Spray = Current_Weapon.Get_Spray()
-	
-	if Current_Weapon.Secondary_Mode == true:
-		Spray = Vector2.ZERO
-	
-	var Ray_Origin = _Camera.project_ray_origin(_Viewport/2)
-	var Ray_End = (Ray_Origin + _Camera.project_ray_normal((_Viewport/2)+Vector2i(Spray))*_fire_range)
-
-	var New_Intersection = PhysicsRayQueryParameters3D.create(Ray_Origin,Ray_End)
-	New_Intersection.set_exclude(Collision_Exclusion)
-	var Intersection = get_world_3d().direct_space_state.intersect_ray(New_Intersection)
-	
-	if not Intersection.is_empty():
-		var Collision = [Intersection.collider,Intersection.position]
-		var rd = Debug_Bullet.instantiate()
-		var world = get_tree().get_root()
-		world.add_child(rd)
-		rd.global_translate(Intersection.position)
-		return Collision
-	else:
-		return [null,Ray_End]
-
-
-func GetCameraCollision2(_fire_range: int)->Array:
 	var space_state = get_world_3d().direct_space_state
-	var _Camera = get_viewport().get_camera_3d()
-	var _Viewport = get_viewport().get_size()
 
 	var Ray_Origin = Bullet_RayCast.global_transform.origin
 	var dir = -Bullet_RayCast.global_transform.basis.z
@@ -268,6 +243,10 @@ func GetCameraCollision2(_fire_range: int)->Array:
 	var Ray_End = Ray_Origin + dir * _fire_range
 	#print("Ray_Origin: ", Ray_Origin)
 	#print("Ray_End: ", Ray_End)
+
+	# solution local mode
+	#var _Camera = get_viewport().get_camera_3d()
+	#var _Viewport = get_viewport().get_size()
 
 	#var Ray_Origin1 = _Camera.project_ray_origin(_Viewport/2)
 	#var Ray_End1 = (Ray_Origin + _Camera.project_ray_normal((_Viewport/2)+Vector2i(Spray))*_fire_range)
@@ -294,7 +273,7 @@ func GetCameraCollision2(_fire_range: int)->Array:
 func HitScanCollision(Collision: Array):
 	var Point = Collision[1]
 	if Collision[0]:
-		if Collision[0].is_in_group("Target"):
+		#if Collision[0].is_in_group("Target"):
 			var Bullet = get_world_3d().direct_space_state
 
 			var Bullet_Direction = (Point - Bullet_Point.global_transform.origin).normalized()
@@ -307,13 +286,14 @@ func HitScanCollision(Collision: Array):
 
 
 func HitScanDamage(Collider, Direction, Position, Damage):
-	if Collider.is_in_group("Target") and Collider.has_method("Hit_Successful"):
+	#if Collider.is_in_group("Target") and 
+	if Collider.has_method("Hit_Successful"):
 		Hit_Successfull.emit()
 		Collider.Hit_Successful(Damage, Direction, Position)
 
 
 func LaunchProjectile(Point: Vector3):
-	print("LaunchProjectile: ", Point)
+	#print("LaunchProjectile: ", Point)
 	var Direction = (Point - Bullet_Point.global_transform.origin).normalized()
 	var Projectile = Current_Weapon.Projectile_To_Load.instantiate()
 

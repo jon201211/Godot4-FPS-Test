@@ -1,5 +1,5 @@
 extends Node
-
+class_name World
 
 @onready var hud = $CanvasLayer/HUD
 @onready var health_bar = $CanvasLayer/HUD/HealthBar
@@ -9,6 +9,8 @@ const Player = preload("res://Players/Scenes/player_character.tscn")
 
 
 var SPAWN_RANDOM = 3.0
+
+var playerList = {}
 
 
 func _ready():
@@ -46,12 +48,15 @@ func add_player(peer_id):
 	player.position = Vector3(pos.x * SPAWN_RANDOM * randf(), 3, pos.y * SPAWN_RANDOM * randf())
 	add_child(player)
 
+	playerList[peer_id] = player
+
 	if player.is_multiplayer_authority():
 		player.health_changed.connect(update_health_bar)
 
 func remove_player(peer_id):
 	var player = get_node_or_null(str(peer_id))
 	if player:
+		playerList.erase(peer_id)
 		player.queue_free()
 
 func update_health_bar(health_value):

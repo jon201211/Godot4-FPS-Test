@@ -4,7 +4,12 @@ signal health_changed(health_value)
 
 @onready var camera = $Camera
 
-
+var peer_id = 0
+var peer_name = ""
+var shoot_count = 0
+var failed_count = 0
+var Health = 3
+var die = 0
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -15,13 +20,15 @@ var MouseSensitivity = 0.001
 var shake_rotation = 0 
 var Start_Shake_Rotation = 0
 
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = 9.8 #ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _enter_tree():
-	var pname = name
-	print("_enter_tree  player name : ", pname, position)
-	set_multiplayer_authority(str(pname).to_int())
+	peer_name = name
+	print("_enter_tree  player name : ", peer_name, position)
+	set_multiplayer_authority(str(peer_name).to_int())
+	peer_id = str(peer_name).to_int()
 
 func _ready():
 	print("_ready  player name : ", name, position)
@@ -33,6 +40,8 @@ func _ready():
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
 	
+	if die: return
+
 	if event is InputEventMouseMotion:
 		#var MouseEvent = event.relative * MouseSensitivity
 		#CameraLook(MouseEvent)
@@ -48,7 +57,6 @@ func _unhandled_input(event):
 # 			hit_player.receive_damage.rpc_id(hit_player.get_multiplayer_authority())
 
 
-
 func CameraLook(Movement: Vector2):
 	CameraRotation += Movement
 	
@@ -61,6 +69,8 @@ func CameraLook(Movement: Vector2):
 
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
+
+	if die: return
 	
 	# Add the gravity.
 	if not is_on_floor():
@@ -83,6 +93,11 @@ func _physics_process(delta):
 	
 	
 
+func Die():
+	die = 1
+	print("die, player name : ", get_multiplayer_authority())
+
+
 #@rpc("call_local")
 #func play_shoot_effects():
 #	anim_player.stop()
@@ -102,3 +117,8 @@ func _physics_process(delta):
 #	if anim_name == "shoot":
 #		anim_player.play("idle")
 
+func Hit_Successful(Damage, _Direction: Vector3 = Vector3.ZERO, _Position: Vector3 = Vector3.ZERO):
+	Health -= Damage
+	health_changed.emit(Health)
+	if Health <= 0:
+		Die()

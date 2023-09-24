@@ -1,0 +1,53 @@
+[gd_scene load_steps=2 format=3 uid="uid://wsa85ht6ssjj"]
+
+[sub_resource type="FontFile" id="1"]
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/16/0/kerning_overrides/16/0 = Vector2(0, 0)
+
+[node name="Pause_Popup" type="Window"]
+process_mode = 3
+theme_override_fonts/title_font = SubResource("1")
+
+[node name="Button_resume" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -130.0
+offset_top = -139.0
+offset_right = 130.0
+offset_bottom = -79.0
+theme_override_fonts/font = SubResource("1")
+text = "Resume"
+
+[node name="Button_quit" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -130.0
+offset_top = -69.0
+offset_right = 130.0
+offset_bottom = -9.0
+theme_override_fonts/font = SubResource("1")
+text = "Quit to title"
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -140.0
+offset_right = 140.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(0.767365, 0.753906, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = SubResource("1")
+text = "GAME PAUSED"
