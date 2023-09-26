@@ -96,7 +96,7 @@ func popup_score_show():
 
 func popup_score_delete():
 	# Make sure the mouse is visible
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	# If we have a popup, destoy it
 	if popup_score != null:
@@ -112,10 +112,10 @@ func on_level_next_round():
 
 
 func on_level_next_round_timeout():
+	print("level next round start")
 	popup_score_delete()
-
-
-
+	if world_scene:
+		world_scene.reset_level_round()
 
 
 
@@ -126,7 +126,7 @@ func _unhandled_input(event):
 	#print("main input:", event)
 
 	if event.is_action_pressed("show_billboard"):
-		print("TAB pressed")
+		#print("TAB pressed")
 		popup_score_show()
 
 
@@ -173,3 +173,10 @@ func _on_exit_button_pressed():
 	get_tree().quit()
 
 
+
+
+func _on_level_spawner_spawned(node):
+	#if node.is_multiplayer_authority():
+	node.connect("LEVEL_NEXT_ROUND", self.on_level_next_round)
+	world_scene = node
+	#pass # Replace with function body.

@@ -37,6 +37,10 @@ window/size/window_height_override=720
 
 import/fbx/enabled=false
 
+[gui]
+
+theme/custom_font="res://Assets/fonts/Ubuntu-Bold.ttf"
+
 [input]
 
 ui_left={

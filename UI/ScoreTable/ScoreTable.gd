@@ -48,15 +48,14 @@ func _ready():
 			var player = playerList[i]
 			var new_table_row = m_table_row_scene.instantiate()
 			m_scores_vbox.add_child(new_table_row)
-			new_table_row.set_row( player.peer_name, str(player.shoot_count),str(player.failed_count),str(player.die))
+			new_table_row.set_row( player.peer_name, str(player.ShootCount),str(player.Deadcount),str(player.Health))
 
 	Logger.log_debug("ScoreTable: Ready")
 
 
 func _unhandled_input(event):
 
-
 	if event.is_action_released("show_billboard"):
-		print("TAB release")
+		#print("TAB release")
 		emit_signal("POPUP_SCORE_CLOSE")
 

@@ -48,7 +48,7 @@ func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
 
 	#player die 
-	if get_parent().get_parent().die: return 
+	if get_parent().get_parent().Health == 0: return 
 
 	if event.is_action_pressed("WeaponUp"):
 		var GetRef = WeaponStack.find(Current_Weapon.Weapon_Name)
@@ -128,7 +128,7 @@ func shoot():
 			Current_Weapon.Current_Ammo -= 1
 			Update_Ammo.emit([Current_Weapon.Current_Ammo, Current_Weapon.Reserve_Ammo])
 			var Camera_Collission =  GetCameraCollision(Current_Weapon.Fire_Range)
-			print("Camera_Collission: ", Camera_Collission,  "type: ", Current_Weapon.Type)
+			#print("Camera_Collission: ", Camera_Collission,  "type: ", Current_Weapon.Type)
 			match Current_Weapon.Type:
 				NULL:
 					pass
@@ -286,10 +286,12 @@ func HitScanCollision(Collision: Array):
 
 
 func HitScanDamage(Collider, Direction, Position, Damage):
+	#print("HitScanDamage")
 	#if Collider.is_in_group("Target") and 
 	if Collider.has_method("Hit_Successful"):
 		Hit_Successfull.emit()
-		Collider.Hit_Successful(Damage, Direction, Position)
+		var shooter = get_parent().get_parent()
+		Collider.Hit_Successful(shooter, Damage, Direction, Position)
 
 
 func LaunchProjectile(Point: Vector3):

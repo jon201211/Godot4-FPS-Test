@@ -4,12 +4,19 @@ signal health_changed(player, health_value)
 
 @onready var camera = $Camera
 
+var MAX_HEALTH = 3
+
+#player name
 var peer_id = 0
 var peer_name = ""
-var shoot_count = 0
-var failed_count = 0
-var Health = 3
-var die = 0
+
+#player statistic
+var ShootCount = 0
+var Deadcount = 0
+
+#local state
+var Health = MAX_HEALTH
+
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -26,12 +33,12 @@ var gravity = 9.8 #ProjectSettings.get_setting("physics/3d/default_gravity")
 
 func _enter_tree():
 	peer_name = name
-	print("_enter_tree  player name : ", peer_name, position)
+	print("_enter_tree player name: ", peer_name, position)
 	set_multiplayer_authority(str(peer_name).to_int())
 	peer_id = str(peer_name).to_int()
 
 func _ready():
-	print("_ready  player name : ", name, position)
+	#print("_ready  player name: ", name, position)
 	if not is_multiplayer_authority(): return
 	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -40,7 +47,7 @@ func _ready():
 func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
 	
-	if die: return
+	if Health == 0: return
 
 	if event is InputEventMouseMotion:
 		#var MouseEvent = event.relative * MouseSensitivity
@@ -70,7 +77,7 @@ func CameraLook(Movement: Vector2):
 func _physics_process(delta):
 	if not is_multiplayer_authority(): return
 
-	if die: return
+	if Health == 0: return
 	
 	# Add the gravity.
 	if not is_on_floor():
@@ -91,11 +98,6 @@ func _physics_process(delta):
 
 	move_and_slide()
 	
-	
-
-func Die():
-	die = 1
-	print("die, player name : ", get_multiplayer_authority())
 
 
 #@rpc("call_local")
@@ -117,9 +119,21 @@ func Die():
 #	if anim_name == "shoot":
 #		anim_player.play("idle")
 
-func Hit_Successful(Damage, _Direction: Vector3 = Vector3.ZERO, _Position: Vector3 = Vector3.ZERO):
+func Hit_Successful(shooter, Damage, _Direction: Vector3 = Vector3.ZERO, _Position: Vector3 = Vector3.ZERO):
+	print("Hit_Successful shooter: ", shooter.name, " player:", self.name," ", Health," ", Damage)
 	if Health > 0:
 		Health -= Damage
-		health_changed.emit(self, Health)
+
 		if Health <= 0:
-			Die()
+			print("Hit_Successful dead ")
+			Deadcount += 1
+			#shoot_deaded.emit(shooter, self)
+			shooter.ShootCount += 1
+
+		health_changed.emit(self, Health)
+
+func reset_values():
+	Health = MAX_HEALTH
+	var pos := Vector2.from_angle(randf() * 2 * PI)
+	self.position = Vector3(pos.x * 3 * randf(), 3, pos.y * 3 * randf())
+
