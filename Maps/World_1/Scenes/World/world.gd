@@ -10,7 +10,15 @@ const Player = preload("res://Players/Scenes/player_character.tscn")
 
 var SPAWN_RANDOM = 3.0
 
+var LEVEL_ROUND_MAX = 50
+
+signal LEVEL_NEXT_ROUND
+
 var playerList = {}
+var level_round = 0
+
+var player_total = 0
+var alive_player_count = 0
 
 
 func _ready():
@@ -49,6 +57,8 @@ func add_player(peer_id):
 	add_child(player)
 
 	playerList[peer_id] = player
+	player_total += 1
+	alive_player_count += 1
 
 	if player.is_multiplayer_authority():
 		player.health_changed.connect(update_health_bar)
@@ -58,12 +68,33 @@ func remove_player(peer_id):
 	if player:
 		playerList.erase(peer_id)
 		player.queue_free()
+		player_total -= 1
+		alive_player_count -= 1
 
-func update_health_bar(health_value):
+func update_health_bar(player, health_value):
+	if health_bar.value != health_value and health_value == 0:
+		alive_player_count -= 1
+
+	#if health_bar.value == health_value
+	#	return
+
 	health_bar.value = health_value
+
+	if (player_total > 1 ) and alive_player_count <= 1:
+		print("game over this round!")
+		#reset_level_round()
+		reset_level_round.rpc()
+
+
 
 func _on_multiplayer_spawner_spawned(node):
 	if node.is_multiplayer_authority():
 		node.health_changed.connect(update_health_bar)
 
 
+
+@rpc("call_local", "any_peer")
+func reset_level_round():
+	level_round += 1
+	print("next round: ", level_round)
+	emit_signal("LEVEL_NEXT_ROUND")

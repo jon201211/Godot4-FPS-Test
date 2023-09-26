@@ -44,7 +44,7 @@ func _ready():
 	Animation_Player.animation_finished.connect(_on_animation_finished)
 	Initialize(Start_Weapons) #current starts on the first weapon in the stack
 
-func _input(event):
+func _unhandled_input(event):
 	if not is_multiplayer_authority(): return
 
 	#player die 

@@ -23,7 +23,6 @@ GlobalTimer="*res://Autoloads/GlobalTimer.gd"
 Language="*res://Autoloads/Language.gd"
 Logger="*res://Autoloads/Logger.gd"
 Resolution="*res://Autoloads/Resolution.gd"
-Settings="*res://Autoloads/Settings.gd"
 SfxManager="*res://Autoloads/SfxManager.gd"
 
 [display]

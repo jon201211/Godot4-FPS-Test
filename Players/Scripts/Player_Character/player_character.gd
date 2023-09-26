@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-signal health_changed(health_value)
+signal health_changed(player, health_value)
 
 @onready var camera = $Camera
 
@@ -111,14 +111,15 @@ func Die():
 #	if health <= 0:
 #		health = 3
 #		position = Vector3.ZERO
-#	health_changed.emit(health)
+#	health_changed.emit(self, health)
 #
 #func _on_animation_player_animation_finished(anim_name):
 #	if anim_name == "shoot":
 #		anim_player.play("idle")
 
 func Hit_Successful(Damage, _Direction: Vector3 = Vector3.ZERO, _Position: Vector3 = Vector3.ZERO):
-	Health -= Damage
-	health_changed.emit(Health)
-	if Health <= 0:
-		Die()
+	if Health > 0:
+		Health -= Damage
+		health_changed.emit(self, Health)
+		if Health <= 0:
+			Die()

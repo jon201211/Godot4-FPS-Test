@@ -3,7 +3,7 @@ extends PopupPanel
 const MAX_SCORES_TO_SHOW = 20
 #const SCORES_FILENAME = "res://scores.txt"
 
-signal POP_CLOSE
+signal POPUP_SCORE_CLOSE
 
 @onready var m_background = find_child("Background")
 @onready var m_scores_vbox = find_child("ScoresVBox")
@@ -16,9 +16,9 @@ signal POP_CLOSE
 
 
 func _ready():
-	#m_background.color = Settings.MENU_BACKGROUND_COLOR
+	#m_background.color = GameSettings.MENU_BACKGROUND_COLOR
 	m_no_scores_label.set_text(tr("NO-SCORES"))
-	m_first_table_row.set_row(tr("PLAYER-NAME"), tr("SCORE"), tr("DATE"))
+	m_first_table_row.set_row(tr("NAME"), tr("SCORE"),  tr("FAIL"), tr("STATE"))
 
 
 	m_no_scores_label.visible = false
@@ -48,15 +48,15 @@ func _ready():
 			var player = playerList[i]
 			var new_table_row = m_table_row_scene.instantiate()
 			m_scores_vbox.add_child(new_table_row)
-			new_table_row.set_row(str(player.peer_id), player.peer_name, str(player.shoot_count))
+			new_table_row.set_row( player.peer_name, str(player.shoot_count),str(player.failed_count),str(player.die))
 
 	Logger.log_debug("ScoreTable: Ready")
 
 
-func _input(event):
+func _unhandled_input(event):
 
 
 	if event.is_action_released("show_billboard"):
 		print("TAB release")
-		emit_signal("POP_CLOSE")
+		emit_signal("POPUP_SCORE_CLOSE")
 
