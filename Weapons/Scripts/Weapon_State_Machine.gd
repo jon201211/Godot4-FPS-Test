@@ -128,7 +128,7 @@ func shoot():
 			Current_Weapon.Current_Ammo -= 1
 			Update_Ammo.emit([Current_Weapon.Current_Ammo, Current_Weapon.Reserve_Ammo])
 			var Camera_Collission =  GetCameraCollision(Current_Weapon.Fire_Range)
-			#print("Camera_Collission: ", Camera_Collission,  "type: ", Current_Weapon.Type)
+			print("Camera_Collission: ", Camera_Collission,  "type: ", Current_Weapon.Type)
 			match Current_Weapon.Type:
 				NULL:
 					pass
@@ -297,7 +297,9 @@ func HitScanDamage(Collider, Direction, Position, Damage):
 func LaunchProjectile(Point: Vector3):
 	#print("LaunchProjectile: ", Point)
 	var Direction = (Point - Bullet_Point.global_transform.origin).normalized()
+	var shooter = get_parent().get_parent()
 	var Projectile = Current_Weapon.Projectile_To_Load.instantiate()
+	Projectile.Shooter = shooter
 
 	Bullet_Point.add_child(Projectile)
 	Add_Signal_To_HUD.emit(Projectile)
@@ -309,6 +311,7 @@ func LaunchProjectile(Point: Vector3):
 	
 	Projectile.set_linear_velocity(Direction*Current_Weapon.Projectile_Velocity)
 	Projectile.Damage = Current_Weapon.Damage
+
 
 func Remove_Exclusion(_RID):
 	Collision_Exclusion.erase(_RID)

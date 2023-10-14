@@ -100,6 +100,7 @@ size = Vector3(1.60191, 1.70789, 1.83518)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_g0f6h"]
 material = SubResource("StandardMaterial3D_hdfhk")
+radius = 0.556
 height = 1.7
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_vtfoh"]
@@ -119,6 +120,7 @@ properties/2/watch = false
 [node name="Player_Character" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 collision_layer = 2
+collision_mask = 7
 floor_max_angle = 0.872665
 script = ExtResource("1_h0t42")
 

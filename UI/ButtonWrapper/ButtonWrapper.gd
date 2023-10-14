@@ -1,6 +1,6 @@
 extends Button
 
-@onready var m_button_sound = load("res://Assets/SFX/button.wav")
+@onready var m_button_sound = load("res://Assets/SFX/button.ogg")
 
 
 # Sets wrapper up.

@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://Weapons/Scripts/bullet.gd" id="1_l4wtt"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bix2d"]
-radius = 0.099605
-height = 0.419677
+radius = 0.01
+height = 0.042
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x0fj0"]
 resource_name = "yellow"
@@ -59,7 +59,7 @@ properties/1/watch = false
 top_level = true
 collision_layer = 4
 collision_mask = 5
-mass = 0.1
+mass = 0.01
 gravity_scale = 0.1
 continuous_cd = true
 max_contacts_reported = 5
